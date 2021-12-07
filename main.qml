@@ -8,6 +8,9 @@ Window {
     title: qsTr("Fear & Greed Chart")
 
     FearGreedChart {
+        width: 100
+        height: 100
+
         anchors {
             centerIn: parent
         }
