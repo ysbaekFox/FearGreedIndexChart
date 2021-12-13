@@ -4,6 +4,8 @@
 #include <Qt>
 #include <QMessageLogger>
 
+#include <QtMath>
+
 #include "fearGreedChart.h"
 
 FearGreedChart::FearGreedChart(QQuickItem* parent)
@@ -16,7 +18,9 @@ FearGreedChart::FearGreedChart(QQuickItem* parent)
       m_GreedDialWidth(1),
       m_FeerPenStyle(Qt::PenCapStyle::SquareCap),
       m_GreedPenStyle(Qt::PenCapStyle::SquareCap),
-      m_BackgroundColor(Qt::transparent)
+      m_FeerBarColor(Qt::transparent),
+      m_GreedBarColor(Qt::transparent),
+      m_CenterPinColor(Qt::transparent)
 {
 
 }
@@ -39,8 +43,8 @@ void FearGreedChart::paint(QPainter *painter)
     painter->setPen(pen);
 
     // Feer
-    painter->setBrush(m_BackgroundColor);
-    painter->setPen(m_BackgroundColor);
+    painter->setBrush(m_FeerBarColor);
+    painter->setPen(m_FeerBarColor);
     painter->drawPie( x() + (size*0.5), y() + (size*0.5), width(), height() , getFeerStartAngle() * 16, getFeerSpanAngle() * 16);
 
     QColor innerColor;
@@ -50,8 +54,8 @@ void FearGreedChart::paint(QPainter *painter)
     painter->drawPie( x() + (size*0.5) + 30, y() + (size*0.5) + 30, width() - 60, height() - 60, getFeerStartAngle() * 16, getFeerSpanAngle() * 16);
 
     // Greed
-    painter->setBrush(m_BackgroundColor);
-    painter->setPen(m_BackgroundColor);
+    painter->setBrush(m_GreedBarColor);
+    painter->setPen(m_GreedBarColor);
     painter->drawPie( x() + (size*0.5), y() + (size*0.5), width(), height() , getGreedStartAngle() * 16, getGreedSpanAngle() * 16);
 
     innerColor.setNamedColor("white");
@@ -59,9 +63,13 @@ void FearGreedChart::paint(QPainter *painter)
     painter->setPen(innerColor);
     painter->drawPie( x() + (size*0.5) + 30, y() + (size*0.5) + 30, width() - 60, height() - 60, getGreedStartAngle() * 16, getGreedSpanAngle() * 16);
 
-    painter->setBrush(m_BackgroundColor);
-    painter->setPen(m_BackgroundColor);
+    painter->setBrush(m_CenterPinColor);
+    painter->setPen(m_CenterPinColor);
     painter->drawPie( x() + (size*0.5) + 230, y() + (size*0.5) + 230, width() - 460, height() - 460, 0 * 16, 360 * 16);
+
+    painter->setBrush(innerColor);
+    painter->setPen(innerColor);
+    painter->drawPie( x() + (size*0.5) + 240, y() + (size*0.5) + 240, width() - 480, height() - 480, 0 * 16, 360 * 16);
 }
 
 void FearGreedChart::setFeerStartAngle(qreal angle)
@@ -128,10 +136,26 @@ void FearGreedChart::setGreedDialWidth(qreal width)
     emit greedDialWidthChanged();
 }
 
-void FearGreedChart::setBackgroundColor(QColor color)
+void FearGreedChart::setCenterPinColor(QColor color)
 {
-    if(m_BackgroundColor == color)
+    if(m_CenterPinColor == color)
         return;
-    m_BackgroundColor = color;
-    emit backgroundColorChanged();
+    m_CenterPinColor = color;
+    emit centerPinColorChanged();
+}
+
+void FearGreedChart::setFeerBarColor(QColor color)
+{
+    if(m_FeerBarColor == color)
+        return;
+    m_FeerBarColor = color;
+    emit feerBarColorChanged();
+}
+
+void FearGreedChart::setGreedBarColor(QColor color)
+{
+    if(m_GreedBarColor == color)
+        return;
+    m_GreedBarColor = color;
+    emit greedBarColorChanged();
 }
