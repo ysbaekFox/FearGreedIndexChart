@@ -25,7 +25,10 @@ Window {
             greedDialWidth: 20
             greedPenStyle: Qt.RoundCap
 
-            backgroundColor: "#34495e"
+            feerBarColor: "red"
+            greedBarColor: "green"
+
+            centerPinColor: "#34495e"
 
             anchors {
                 centerIn: parent
