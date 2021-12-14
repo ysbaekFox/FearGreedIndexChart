@@ -43,8 +43,17 @@ void FearGreedChart::paint(QPainter *painter)
     painter->setPen(pen);
 
     // Feer
-    painter->setBrush(m_FeerBarColor);
+
+    QLinearGradient gradient;
+    gradient.setStart(-250, 0);
+    gradient.setFinalStop(0, -250);
+    gradient.setColorAt(0, m_FeerBarColor);
+    gradient.setColorAt(1, "grey");
+
+    painter->setBrush(gradient);
     painter->setPen(m_FeerBarColor);
+
+    // 중심, 원이 그릴 사각형 가로 세로 length
     painter->drawPie( x() + (size*0.5), y() + (size*0.5), width(), height() , getFeerStartAngle() * 16, getFeerSpanAngle() * 16);
 
     QColor innerColor;
