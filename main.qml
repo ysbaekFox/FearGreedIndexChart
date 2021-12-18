@@ -16,8 +16,8 @@ Window {
             width: 500
             height: 500
 
-            feerStartAngle: 90
-            feerSpanAngle: 100
+            feerStartAngle: -10
+            feerSpanAngle: 200
 
             greedStartAngle: -10
             greedSpanAngle: 100
@@ -25,8 +25,8 @@ Window {
             greedDialWidth: 20
             greedPenStyle: Qt.RoundCap
 
-            feerBarColor: "red"
-            greedBarColor: "green"
+            feerBarColor: "#E6422C"
+            greedBarColor: "#23FA48"
 
             centerPinColor: "#34495e"
 
