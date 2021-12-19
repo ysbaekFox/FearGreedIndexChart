@@ -33,6 +33,16 @@ void FearGreedChart::paint(QPainter *painter)
     setWidth(size), setHeight(size);
     painter->setRenderHints(QPainter::Antialiasing, true);
 
+    qreal xCenterPoint = x() + ( width() * 0.5);
+    qreal yCenterPoint = y() + ( height() * 0.5 );
+
+    qDebug() << "xCenterPoint : " << xCenterPoint;
+    qDebug() << "yCenterPoint : " << yCenterPoint;
+
+    qreal radius = size * 0.5;
+
+    qDebug() << "radius : " << radius;
+
     QPen pen = painter->pen();
     pen.setCapStyle(m_PenStyle);
     pen.setWidth(m_DialWidth);
@@ -54,19 +64,34 @@ void FearGreedChart::paint(QPainter *painter)
 
     painter->setBrush(gradient);
     painter->setPen(Qt::transparent);
-    painter->drawPie( 0, 0, width(), height() , getStartAngle() * 16, getSpanAngle() * 16);
+    painter->drawPie( xCenterPoint, yCenterPoint,
+                      width(), height() , getStartAngle() * 16, getSpanAngle() * 16);
 
     painter->setBrush(m_CenterInnerColor);
     painter->setPen(m_CenterInnerColor);
-    painter->drawPie( m_DialWidth, m_DialWidth, width() - (m_DialWidth * 2), height() - (m_DialWidth * 2), getStartAngle() * 16, getSpanAngle() * 16);
+    painter->drawPie( xCenterPoint + m_DialWidth, yCenterPoint + m_DialWidth,
+                      width() - (m_DialWidth * 2), height() - (m_DialWidth * 2), getStartAngle() * 16, getSpanAngle() * 16);
 
     painter->setBrush(m_CenterPinColor);
     painter->setPen(m_CenterPinColor);
-    painter->drawPie( width() * 0.46, height() * 0.46, width() - (width() * 0.92), height() - (height() * 0.92), 0 * 16, 360 * 16);
+    painter->drawPie( xCenterPoint + width() * 0.46, yCenterPoint + height() * 0.46,
+                      width() - (width() * 0.92), height() - (height() * 0.92), 0 * 16, 360 * 16);
 
     painter->setBrush(m_CenterInnerColor);
     painter->setPen(m_CenterInnerColor);
-    painter->drawPie( width() * 0.48, height() * 0.48, width() - (width() * 0.96), height() - (height() * 0.96), 0 * 16, 360 * 16);
+    painter->drawPie( xCenterPoint + width() * 0.48, yCenterPoint + height() * 0.48,
+                      width() - (width() * 0.96), height() - (height() * 0.96), 0 * 16, 360 * 16);
+
+    for(qint32 idx=-2; idx <= 38 ; idx++)
+    {
+        qreal xPoint = (xCenterPoint + width() * 0.49) + (qCos(qDegreesToRadians(idx * -5.0)) * radius);
+        qreal yPoint = (yCenterPoint + height() * 0.49) + (qSin(qDegreesToRadians(idx * -5.0)) * radius);
+
+        painter->setBrush(QColor("#000000"));
+        painter->setPen(QColor("#000000"));
+        painter->drawPie( xPoint, yPoint,
+                          width() - (width() * 0.98), height() - (height() * 0.98), 0 * 16, 360 * 16);
+    }
 }
 
 void FearGreedChart::setStartAngle(qreal angle)
