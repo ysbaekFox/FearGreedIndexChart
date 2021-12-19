@@ -19,12 +19,13 @@ Window {
             startAngle: -10
             spanAngle: 200
 
-            greedDialWidth: 20
-            greedPenStyle: Qt.RoundCap
+            dialWidth: 30
+            penStyle: Qt.RoundCap
 
             feerBarColor: "#E6422C"
             greedBarColor: "#23FA48"
             centerPinColor: "#34495e"
+            centerInnerColor: "white"
 
             anchors {
                 centerIn: parent
