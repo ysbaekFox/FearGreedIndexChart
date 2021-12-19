@@ -10,17 +10,16 @@
 
 FearGreedChart::FearGreedChart(QQuickItem* parent)
     : QQuickPaintedItem(parent),
-      m_FeerStartAngle(0),
-      m_FeerSpanAngle(0),
-      m_GreedStartAngle(0),
-      m_GreedSpanAngle(0),
+      m_StartAngle(0),
+      m_SpanAngle(0),
       m_FeerDialWidth(1),
       m_GreedDialWidth(1),
       m_FeerPenStyle(Qt::PenCapStyle::SquareCap),
       m_GreedPenStyle(Qt::PenCapStyle::SquareCap),
       m_FeerBarColor(Qt::transparent),
       m_GreedBarColor(Qt::transparent),
-      m_CenterPinColor(Qt::transparent)
+      m_CenterPinColor(Qt::transparent),
+      m_CenterInnerColor(Qt::transparent)
 {
 
 }
@@ -36,13 +35,11 @@ void FearGreedChart::paint(QPainter *painter)
     setWidth(size), setHeight(size);
     painter->setRenderHints(QPainter::Antialiasing, true);
 
-    // Common
     QPen pen = painter->pen();
     pen.setCapStyle(m_FeerPenStyle);
     pen.setWidth(m_FeerDialWidth);
     painter->setPen(pen);
 
-    // Feer
     QRect drawingRect;
     drawingRect.setX(0);
     drawingRect.setY(0);
@@ -59,48 +56,37 @@ void FearGreedChart::paint(QPainter *painter)
 
     painter->setBrush(gradient);
     painter->setPen(Qt::transparent);
-    // 중심, 원이 그릴 사각형 가로 세로 length
-    painter->drawPie( x() + (size*0.5), y() + (size*0.5), width(), height() , getFeerStartAngle() * 16, getFeerSpanAngle() * 16);
+    painter->drawPie( 0, 0, width(), height() , getStartAngle() * 16, getSpanAngle() * 16);
 
     QColor innerColor;
     innerColor.setNamedColor("white");
     painter->setBrush(innerColor);
     painter->setPen(innerColor);
-    painter->drawPie( x() + (size*0.5) + 30, y() + (size*0.5) + 30, width() - 60, height() - 60, getFeerStartAngle() * 16, getFeerSpanAngle() * 16);
-
-    // Greed
-    //painter->setBrush(m_GreedBarColor);
-    //painter->setPen(m_GreedBarColor);
-    //painter->drawPie( x() + (size*0.5), y() + (size*0.5), width(), height() , getGreedStartAngle() * 16, getGreedSpanAngle() * 16);
-
-    innerColor.setNamedColor("white");
-    painter->setBrush(innerColor);
-    painter->setPen(innerColor);
-    painter->drawPie( x() + (size*0.5) + 30, y() + (size*0.5) + 30, width() - 60, height() - 60, getGreedStartAngle() * 16, getGreedSpanAngle() * 16);
+    painter->drawPie( 30, 30, width() - 60, height() - 60, getStartAngle() * 16, getSpanAngle() * 16);
 
     painter->setBrush(m_CenterPinColor);
     painter->setPen(m_CenterPinColor);
-    painter->drawPie( x() + (size*0.5) + 230, y() + (size*0.5) + 230, width() - 460, height() - 460, 0 * 16, 360 * 16);
+    painter->drawPie( 230, 230, width() - 460, height() - 460, 0 * 16, 360 * 16);
 
     painter->setBrush(innerColor);
     painter->setPen(innerColor);
-    painter->drawPie( x() + (size*0.5) + 240, y() + (size*0.5) + 240, width() - 480, height() - 480, 0 * 16, 360 * 16);
+    painter->drawPie( 240, 240, width() - 480, height() - 480, 0 * 16, 360 * 16);
 }
 
-void FearGreedChart::setFeerStartAngle(qreal angle)
+void FearGreedChart::setStartAngle(qreal angle)
 {
-    if(m_FeerStartAngle == angle)
+    if(m_StartAngle == angle)
         return;
-    m_FeerStartAngle = angle;
-    emit feerStartAngleChanged();
+    m_StartAngle = angle;
+    emit startAngleChanged();
 }
 
-void FearGreedChart::setFeerSpanAngle(qreal angle)
+void FearGreedChart::setSpanAngle(qreal angle)
 {
-    if(m_FeerSpanAngle == angle)
+    if(m_SpanAngle == angle)
         return;
-    m_FeerSpanAngle = angle;
-    emit feerSpanAngleChanged();
+    m_SpanAngle = angle;
+    emit spanAngleChanged();
 }
 
 void FearGreedChart::setFeerPenStyle(Qt::PenCapStyle style)
@@ -117,22 +103,6 @@ void FearGreedChart::setFeerDialWidth(qreal width)
         return;
     m_FeerDialWidth = width;
     emit feerDialWidthChanged();
-}
-
-void FearGreedChart::setGreedStartAngle(qreal angle)
-{
-    if(m_GreedStartAngle == angle)
-        return;
-    m_GreedStartAngle = angle;
-    emit greedStartAngleChanged();
-}
-
-void FearGreedChart::setGreedSpanAngle(qreal angle)
-{
-    if(m_GreedSpanAngle == angle)
-        return;
-    m_GreedSpanAngle = angle;
-    emit greedSpanAngleChanged();
 }
 
 void FearGreedChart::setGreedPenStyle(Qt::PenCapStyle style)
@@ -173,4 +143,12 @@ void FearGreedChart::setGreedBarColor(QColor color)
         return;
     m_GreedBarColor = color;
     emit greedBarColorChanged();
+}
+
+void FearGreedChart::setCenterInnerColor(QColor color)
+{
+    if(m_CenterInnerColor == color)
+        return;
+    m_CenterInnerColor = color;
+    emit centerInnerColorChanged();
 }
