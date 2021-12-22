@@ -39,10 +39,6 @@ void FearGreedChart::paint(QPainter *painter)
     qDebug() << "xCenterPoint : " << xCenterPoint;
     qDebug() << "yCenterPoint : " << yCenterPoint;
 
-    qreal radius = size * 0.5;
-
-    qDebug() << "radius : " << radius;
-
     QPen pen = painter->pen();
     pen.setCapStyle(m_PenStyle);
     pen.setWidth(m_DialWidth);
@@ -62,35 +58,48 @@ void FearGreedChart::paint(QPainter *painter)
     gradient.setColorAt(0.5, m_FeerBarColor);
     gradient.setColorAt(1, m_GreedBarColor);
 
+    qreal circleX = 0.0;
+    qreal circleY = 0.0;
+
+    qreal reduceRate = 70;
+    xCenterPoint += reduceRate;
+    yCenterPoint += reduceRate;
+
+    qreal radius = size * 0.5 - reduceRate;
+    qDebug() << "radius : " << radius;
+
+    qreal reducedWidth = width() - (reduceRate * 2);
+    qreal reducedHeight = height() - (reduceRate * 2);
+
     painter->setBrush(gradient);
     painter->setPen(Qt::transparent);
     painter->drawPie( xCenterPoint, yCenterPoint,
-                      width(), height() , getStartAngle() * 16, getSpanAngle() * 16);
+                      reducedWidth, reducedHeight , getStartAngle() * 16, getSpanAngle() * 16);
 
     painter->setBrush(m_CenterInnerColor);
     painter->setPen(m_CenterInnerColor);
     painter->drawPie( xCenterPoint + m_DialWidth, yCenterPoint + m_DialWidth,
-                      width() - (m_DialWidth * 2), height() - (m_DialWidth * 2), getStartAngle() * 16, getSpanAngle() * 16);
+                      reducedWidth - (m_DialWidth * 2), reducedHeight - (m_DialWidth * 2), getStartAngle() * 16, getSpanAngle() * 16);
 
     painter->setBrush(m_CenterPinColor);
     painter->setPen(m_CenterPinColor);
-    painter->drawPie( xCenterPoint + width() * 0.46, yCenterPoint + height() * 0.46,
-                      width() - (width() * 0.92), height() - (height() * 0.92), 0 * 16, 360 * 16);
+    painter->drawPie( xCenterPoint + reducedWidth * 0.46, yCenterPoint + reducedHeight * 0.46,
+                      reducedWidth - (reducedWidth * 0.92), reducedHeight - (reducedHeight * 0.92), 0 * 16, 360 * 16);
 
     painter->setBrush(m_CenterInnerColor);
     painter->setPen(m_CenterInnerColor);
-    painter->drawPie( xCenterPoint + width() * 0.48, yCenterPoint + height() * 0.48,
-                      width() - (width() * 0.96), height() - (height() * 0.96), 0 * 16, 360 * 16);
+    painter->drawPie( xCenterPoint + reducedWidth * 0.48, yCenterPoint + reducedHeight * 0.48,
+                      reducedWidth - (reducedWidth * 0.96), reducedHeight - (reducedHeight * 0.96), 0 * 16, 360 * 16);
 
     for(qint32 idx=-2; idx <= 38 ; idx++)
     {
-        qreal xPoint = (xCenterPoint + width() * 0.49) + (qCos(qDegreesToRadians(idx * -5.0)) * radius);
-        qreal yPoint = (yCenterPoint + height() * 0.49) + (qSin(qDegreesToRadians(idx * -5.0)) * radius);
+        qreal xPoint = (xCenterPoint + reducedWidth * 0.49) + (qCos(qDegreesToRadians(idx * -5.0)) * radius);
+        qreal yPoint = (yCenterPoint + reducedHeight * 0.49) + (qSin(qDegreesToRadians(idx * -5.0)) * radius);
 
         painter->setBrush(QColor("#000000"));
         painter->setPen(QColor("#000000"));
         painter->drawPie( xPoint, yPoint,
-                          width() - (width() * 0.98), height() - (height() * 0.98), 0 * 16, 360 * 16);
+                          reducedWidth - (reducedWidth * 0.98), reducedHeight - (reducedHeight * 0.98), 0 * 16, 360 * 16);
     }
 }
 
