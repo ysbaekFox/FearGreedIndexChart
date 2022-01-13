@@ -58,9 +58,6 @@ void FearGreedChart::paint(QPainter *painter)
     gradient.setColorAt(0.5, m_FeerBarColor);
     gradient.setColorAt(1, m_GreedBarColor);
 
-    qreal circleX = 0.0;
-    qreal circleY = 0.0;
-
     qreal reduceRate = 70;
     xCenterPoint += reduceRate;
     yCenterPoint += reduceRate;
@@ -91,16 +88,16 @@ void FearGreedChart::paint(QPainter *painter)
     painter->drawPie( xCenterPoint + reducedWidth * 0.48, yCenterPoint + reducedHeight * 0.48,
                       reducedWidth - (reducedWidth * 0.96), reducedHeight - (reducedHeight * 0.96), 0 * 16, 360 * 16);
 
-    for(qint32 idx=-2; idx <= 38 ; idx++)
-    {
-        qreal xPoint = (xCenterPoint + reducedWidth * 0.49) + (qCos(qDegreesToRadians(idx * -5.0)) * radius);
-        qreal yPoint = (yCenterPoint + reducedHeight * 0.49) + (qSin(qDegreesToRadians(idx * -5.0)) * radius);
-
-        painter->setBrush(QColor("#000000"));
-        painter->setPen(QColor("#000000"));
-        painter->drawPie( xPoint, yPoint,
-                          reducedWidth - (reducedWidth * 0.98), reducedHeight - (reducedHeight * 0.98), 0 * 16, 360 * 16);
-    }
+    int rectCenterX = width() / 2;
+    int rectCenterY = height() / 2;
+    painter->save();
+    painter->translate(rectCenterX, rectCenterY);
+    painter->rotate(10);
+    pen.setColor(QColor("#000000"));
+    pen.setWidth(5);
+    painter->setPen(pen);
+    painter->drawLine(0, 0, 0 + radius + 10, 0);
+    painter->restore();
 }
 
 void FearGreedChart::setStartAngle(qreal angle)
