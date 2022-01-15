@@ -13,8 +13,8 @@ Window {
         }
 
         FearGreedChart {
-            width: 800
-            height: 800
+            width: 500
+            height: 500
 
             startAngle: -10
             spanAngle: 200

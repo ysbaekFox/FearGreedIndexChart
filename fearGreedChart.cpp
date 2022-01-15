@@ -50,6 +50,11 @@ void FearGreedChart::paint(QPainter *painter)
     drawingRect.setWidth(width());
     drawingRect.setHeight(height());
 
+    painter->setBrush(QColor("grey"));
+    painter->setPen(Qt::transparent);
+    painter->drawPie( xCenterPoint, yCenterPoint,
+                      width(), height() , 0 * 16, 360 * 16);
+
     QConicalGradient gradient;
     gradient.setAngle(m_StartAngle);
     gradient.setCenter(drawingRect.center());
@@ -73,6 +78,21 @@ void FearGreedChart::paint(QPainter *painter)
     painter->drawPie( xCenterPoint, yCenterPoint,
                       reducedWidth, reducedHeight , getStartAngle() * 16, getSpanAngle() * 16);
 
+    int rectCenterX = width() / 2;
+    int rectCenterY = height() / 2;
+
+    for(int i = 0; i < 5; i++)
+    {
+        painter->save();
+        painter->translate(rectCenterX, rectCenterY);
+        painter->rotate(10 - (i * 50));
+        pen.setColor(m_CenterInnerColor);
+        pen.setWidth(1);
+        painter->setPen(pen);
+        painter->drawLine(0, 0, 0 + radius + 10, 0);
+        painter->restore();
+    }
+
     painter->setBrush(m_CenterInnerColor);
     painter->setPen(m_CenterInnerColor);
     painter->drawPie( xCenterPoint + m_DialWidth, yCenterPoint + m_DialWidth,
@@ -87,17 +107,6 @@ void FearGreedChart::paint(QPainter *painter)
     painter->setPen(m_CenterInnerColor);
     painter->drawPie( xCenterPoint + reducedWidth * 0.48, yCenterPoint + reducedHeight * 0.48,
                       reducedWidth - (reducedWidth * 0.96), reducedHeight - (reducedHeight * 0.96), 0 * 16, 360 * 16);
-
-    int rectCenterX = width() / 2;
-    int rectCenterY = height() / 2;
-    painter->save();
-    painter->translate(rectCenterX, rectCenterY);
-    painter->rotate(10);
-    pen.setColor(QColor("#000000"));
-    pen.setWidth(5);
-    painter->setPen(pen);
-    painter->drawLine(0, 0, 0 + radius + 10, 0);
-    painter->restore();
 }
 
 void FearGreedChart::setStartAngle(qreal angle)
