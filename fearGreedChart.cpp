@@ -17,6 +17,7 @@ FearGreedChart::FearGreedChart(QQuickItem* parent)
       m_FeerBarColor(Qt::transparent),
       m_GreedBarColor(Qt::transparent),
       m_CenterPinColor(Qt::transparent),
+      m_BackGroundColor(Qt::transparent),
       m_CenterInnerColor(Qt::transparent)
 {
 
@@ -50,10 +51,10 @@ void FearGreedChart::paint(QPainter *painter)
     drawingRect.setWidth(width());
     drawingRect.setHeight(height());
 
-    painter->setBrush(QColor("grey"));
-    painter->setPen(Qt::transparent);
-    painter->drawPie( xCenterPoint, yCenterPoint,
-                      width(), height() , 0 * 16, 360 * 16);
+    painter->setBrush(m_BackGroundColor);
+    painter->setPen(m_BackGroundColor);
+    painter->drawChord( xCenterPoint + (width() * 0.08), yCenterPoint + (height() * 0.08),
+                      width() - (width() * 0.16), height() - (height() * 0.16), -20 * 16, 220 * 16);
 
     QConicalGradient gradient;
     gradient.setAngle(m_StartAngle);
@@ -74,7 +75,6 @@ void FearGreedChart::paint(QPainter *painter)
     qreal reducedHeight = height() - (reduceRate * 2);
 
     painter->setBrush(gradient);
-    painter->setPen(Qt::transparent);
     painter->drawPie( xCenterPoint, yCenterPoint,
                       reducedWidth, reducedHeight , getStartAngle() * 16, getSpanAngle() * 16);
 
@@ -88,13 +88,12 @@ void FearGreedChart::paint(QPainter *painter)
         painter->rotate(10 - (i * 50));
         pen.setColor(m_CenterInnerColor);
         pen.setWidth(1);
-        painter->setPen(pen);
         painter->drawLine(0, 0, 0 + radius + 10, 0);
         painter->restore();
     }
 
-    painter->setBrush(m_CenterInnerColor);
-    painter->setPen(m_CenterInnerColor);
+    painter->setBrush(m_BackGroundColor);
+    painter->setPen(m_BackGroundColor);
     painter->drawPie( xCenterPoint + m_DialWidth, yCenterPoint + m_DialWidth,
                       reducedWidth - (m_DialWidth * 2), reducedHeight - (m_DialWidth * 2), getStartAngle() * 16, getSpanAngle() * 16);
 
@@ -171,4 +170,12 @@ void FearGreedChart::setCenterInnerColor(QColor color)
         return;
     m_CenterInnerColor = color;
     emit centerInnerColorChanged();
+}
+
+void FearGreedChart::setBackGroundColor(QColor color)
+{
+    if(m_BackGroundColor == color)
+        return;
+    m_BackGroundColor = color;
+    emit backgroundColorChanged();
 }
