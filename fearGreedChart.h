@@ -20,6 +20,7 @@ class FearGreedChart : public QQuickPaintedItem
     Q_PROPERTY(qreal spanAngle READ getSpanAngle WRITE setSpanAngle NOTIFY spanAngleChanged)
     Q_PROPERTY(QColor centerPinColor READ getCenterPinColor WRITE setCenterPinColor NOTIFY centerPinColorChanged)
     Q_PROPERTY(QColor centerInnerColor READ getCenterInnerColor WRITE setCenterInnerColor NOTIFY centerInnerColorChanged)
+    Q_PROPERTY(QColor backgroundColor READ getBackGroundColor WRITE setBackGroundColor NOTIFY backgroundColorChanged)
 
 public:
     FearGreedChart(QQuickItem *parent = 0);
@@ -38,6 +39,8 @@ public:
     Qt::PenCapStyle getPenStyle() {return m_PenStyle;}
     void setDialWidth(qreal width);
     int getDialWidth() {return m_DialWidth;}
+    void setBackGroundColor(QColor color);
+    QColor getBackGroundColor() {return m_BackGroundColor;}
 
     // Feer Setter/Getter
     void setFeerBarColor(QColor color);
@@ -63,6 +66,7 @@ signals:
     void centerInnerColorChanged();
     void penStyleChanged();
     void dialWidthChanged();
+    void backgroundColorChanged();
 
 private:
     // Feer member
@@ -76,6 +80,7 @@ private:
     qreal m_SpanAngle;
     QColor m_CenterPinColor;
     QColor m_CenterInnerColor;
+    QColor m_BackGroundColor;
     Qt::PenCapStyle m_PenStyle;
     int m_DialWidth;
 };

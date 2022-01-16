@@ -26,6 +26,7 @@ Window {
             greedBarColor: "#23FA48"
             centerPinColor: "#34495e"
             centerInnerColor: "white"
+            backgroundColor: "#A6E3C7"
 
             anchors {
                 centerIn: parent
